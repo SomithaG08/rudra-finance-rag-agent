@@ -5,6 +5,7 @@
 **Team Name:** Rudra
 
 **Members:**
+- Somitha Gudivada
 - Mekala Naveen Venkata Sai Kumar
 - Vijaya Venkata Krishna Rudra
 - Srikanth Galipelli
