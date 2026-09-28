@@ -1,7 +1,6 @@
-# Personal Finance & Financial Analysis for Students
+# Personal Finance RAG
 
 ## Team
-
 **Team Name:** Rudra
 
 **Members:**
@@ -10,58 +9,76 @@
 - Vijaya Venkata Krishna Rudra
 - Srikanth Galipelli
 
-## Assignment
+## Project Description
 
-Assignment 0 — Corpus Preparation
+A Retrieval-Augmented Generation application that answers
+questions using the Principles of Finance corpus.
 
-The goal of this assignment is to prepare a clean text corpus for use in a Retrieval-Augmented Generation (RAG) system.
+## Features
 
-## Source
+- Corpus-based question answering
+- Text chunking
+- FAISS vector search
+- OpenAI embeddings
+- GPT-4o-mini answer generation
+- Source and page citations
+- Out-of-scope question handling
+- Gradio web interface
 
-The corpus was extracted from **OpenStax — Principles of Finance**.
-
-The source PDF is stored locally in `data/sources/`.
-
-## Project Structure
+## Architecture
 
 ```text
-personal-finance-corpus/
-├── README.md
-├── .gitignore
-├── scripts/
-│   ├── extract.py
-│   └── EXTRACTION_REPORT.md
-├── data/
-│   ├── sources/
-│   ├── corpus.json
-│   └── sample.json
-└── app/
+corpus.json
+    ↓
+Chunking
+    ↓
+text-embedding-3-small
+    ↓
+FAISS
+    ↓
+Top-10 retrieval
+    ↓
+GPT-4o-mini
+    ↓
+Answer + citations
+    ↓
+Gradio UI
 ```
 
-## Extraction
+## Installation
 
-The extraction script processes PDF documents page by page using PyMuPDF.
-
-It generates `data/corpus.json` and `data/sample.json` and reports extraction statistics.
-
-## Results
-
-- Source files: 1
-- Total entries: 629
-- Total characters: 1,614,510
-- Average characters per entry: 2,566.79
-- Near-empty entries: 3
-
-## Data Policy
-
-The `data/` directory is excluded from Git using `.gitignore`.
-
-The corpus files will be submitted separately through the required private Teams channel.
+```bash
+uv pip install openai python-dotenv tiktoken faiss-cpu numpy gradio
+```
 
 ## Environment
 
-- Python 3.12
-- uv
-- PyMuPDF
-- pdfplumber
-- BeautifulSoup4
+Create a `.env` file in the project root:
+
+```ini
+OPENAI_API_KEY=your_key_here
+```
+
+> **Warning:** Never commit `.env` to Git. It is excluded via `.gitignore`.
+
+## Run
+
+```bash
+python app/app.py
+```
+
+Then open your browser at:
+`http://127.0.0.1:7860`
+
+## Example Questions
+- What is the current ratio?
+- What is diversification and why do investors practice it?
+- What are the reasons a dollar today is worth more than a dollar in the future?
+
+## Out-of-Scope Example
+
+**Question:**
+> Who won the 2022 FIFA World Cup?
+
+**Response:**
+> I don't have enough information to answer this question.
