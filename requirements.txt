@@ -1,0 +1,11 @@
+openai
+faiss-cpu
+numpy
+tiktoken
+gradio
+python-dotenv
+pymupdf
+pdfplumber
+beautifulsoup4
+# optional: cross-encoder reranking (large download, ~1 GB with torch)
+# sentence-transformers
