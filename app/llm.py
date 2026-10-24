@@ -41,7 +41,8 @@ def get_client():
     """Create the OpenAI client once. Returns None in offline mode (no key)."""
     global _client
     if _client is None and has_api_key():
-        from openai import OpenAI
+        from app.tracing import openai_class
+        OpenAI = openai_class()                 # traced by Langfuse when it is configured
         # max_retries: the openai library automatically retries rate-limit (429), server (5xx)
         # and connection errors with exponential back-off -> a network hiccup during the demo
         # does not break the answer. timeout: never wait forever.
@@ -92,6 +93,10 @@ def embed_query(question: str) -> np.ndarray:
 # ---------------------------------------------------------------------------
 # Chat
 # ---------------------------------------------------------------------------
+# Running totals of chat() calls in this process (the agent reads them to count model calls)
+USAGE = {"calls": 0, "prompt_tokens": 0, "completion_tokens": 0}
+
+
 def chat(messages: list[dict], operation: str = "chat", temperature: float = TEMPERATURE,
          json_mode: bool = False, max_tokens: int | None = None) -> str:
     """One gpt-4o-mini call. Returns the text of the answer."""
@@ -106,6 +111,9 @@ def chat(messages: list[dict], operation: str = "chat", temperature: float = TEM
     response = client.chat.completions.create(**kwargs)
     usage = response.usage
     log_cost(operation, CHAT_MODEL, usage.prompt_tokens, usage.completion_tokens)
+    USAGE["calls"] += 1
+    USAGE["prompt_tokens"] += usage.prompt_tokens
+    USAGE["completion_tokens"] += usage.completion_tokens
     return (response.choices[0].message.content or "").strip()
 
 
