@@ -1,0 +1,14 @@
+[
+  {
+    "question": "WRITE YOURSELF - a follow-up that only makes sense after the first question (e.g. 'And at 6%?')",
+    "history": ["WRITE YOURSELF - the earlier user question"],
+    "expected_answer": "WRITE YOURSELF",
+    "source": "principles-finance_-_WEB.pdf",
+    "page": 0,
+    "category": "factual",
+    "sub_type": "follow_up",
+    "difficulty": "medium",
+    "priority": false,
+    "expected_chunks": [{"source": "principles-finance_-_WEB.pdf", "page": 0}]
+  }
+]

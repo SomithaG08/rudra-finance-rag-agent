@@ -1,0 +1,10 @@
+[
+  {
+    "question": "WRITE YOURSELF (no GenAI tools - course rule)",
+    "category": "agent",
+    "sub_type": "one_tool | same_tool_several_times | rephrase_and_retry | search_then_calculate | own_tool_lookup_term | own_tool_get_section | own_tool_cash_flow | no_tool | act_with_approval | out_of_scope | injection_against_actions",
+    "expected_answer": "WRITE YOURSELF",
+    "expected_tools": ["search_corpus", "calculator"],
+    "priority": false
+  }
+]
