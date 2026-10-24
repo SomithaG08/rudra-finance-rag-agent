@@ -7,5 +7,12 @@ python-dotenv
 pymupdf
 pdfplumber
 beautifulsoup4
-# optional: cross-encoder reranking (large download, ~1 GB with torch)
-# sentence-transformers
+# RAG day 1 (mandatory): cross-encoder reranking (downloads torch, ~1 GB the first time)
+sentence-transformers
+# Agent day 1 (mandatory): calculator
+simpleeval
+# Agent day 2: send_message through a Slack / Teams incoming webhook
+requests
+# optional extensions
+# langfuse          # tracing (set LANGFUSE_PUBLIC_KEY / LANGFUSE_SECRET_KEY in .env)
+# mcp               # scripts/mcp_server.py (our tools as an MCP server)
