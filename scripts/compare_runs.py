@@ -22,7 +22,8 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 HISTORY = ROOT / "data" / "eval_history"
 
-COLS = [("n", "n"), ("retrieval_any_hit", "hit"), ("reciprocal_rank", "MRR"),
+COLS = [("n", "n"), ("recall_at_1", "R@1"), ("recall_at_5", "R@5"), ("retrieval_any_hit", "hit"),
+        ("reciprocal_rank", "MRR"),
         ("context_precision", "ctx-P"), ("context_recall", "ctx-R"), ("refusal_correct", "refusal"),
         ("faithfulness", "faithful"), ("relevancy", "relevant"), ("answer_correct", "judge"),
         ("pass", "pass")]

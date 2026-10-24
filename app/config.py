@@ -76,13 +76,28 @@ RRF_K = 60                       # constant of Reciprocal Rank Fusion (standard 
 MAX_CHUNKS_PER_PAGE = 2          # diversity: never fill the top-k with one single page
 CONFIDENCE_THRESHOLD = 0.40      # top vector similarity below this = out of scope
                                  # (measured on our eval set: off-topic <= 0.36, finance >= 0.46)
+                                 # used only when reranking is off (see RERANK_THRESHOLD)
+
+# ---------------------------------------------------------------------------
+# Feature flags (RAG day 1 + day 2 spec) - switch them for the ablation table
+# ---------------------------------------------------------------------------
+USE_RERANK = True                # cross-encoder reranking of the fused candidates (mandatory)
+RERANK_MODEL = "cross-encoder/ms-marco-MiniLM-L-6-v2"
+RERANK_CANDIDATES = 20           # retrieve a wider set (top-20), rerank it, keep the best top-k
+RERANK_THRESHOLD = -4.223           # refuse when the best cross-encoder score is below this
+                                 # (logit scale; tune with scripts/threshold_sweep.py)
+USE_BM25 = True                  # hybrid search; False = vectors only (DEFAULT_SEARCH_MODE)
+USE_QUERY_REWRITE = True         # rewrite follow-ups into standalone questions before searching
+USE_HYDE = False                 # search with a hypothetical answer (1 extra LLM call per question)
+INJECTION_TEST = False           # add the prompt-injection test chunk to the index (demo / tests)
+INJECTION_MODE = "answer"        # "answer" (RAG test) or "act" (agent test: tries to send a message)
 
 # ---------------------------------------------------------------------------
 # Generation
 # ---------------------------------------------------------------------------
-PROMPT_VERSION = "v4"            # which file in prompts/ is the system prompt
+PROMPT_VERSION = "v5"            # which file in prompts/ is the system prompt (v5 = <context> delimiters)
 TEMPERATURE = 0.0                # deterministic, factual answers
-MAX_HISTORY_TURNS = 3            # how many previous Q/A pairs the model sees (memory)
+MAX_HISTORY_TURNS = 2            # previous Q/A pairs the model sees (memory, capped to keep cost down)
 REFUSAL_TEXT = "I don't have enough information to answer this question."
 
 # Human-friendly titles for the documents in data/sources (shown in citations).
