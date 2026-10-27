@@ -6,12 +6,12 @@ Both run in one Gradio app: the **Chat** tab is the RAG pipeline, the **Agent (t
 
 ## Team Rudra
 
-| Member | Area |
+| Member | Main contribution |
 |---|---|
-| Somitha Gudivada | Retrieval evaluation |
-| Mekala Naveen Venkata Sai Kumar | Retrieval agent |
-| Vijaya Venkata Krishna Rudra | Data ingestion |
-| Srikanth Galipelli | UI frontend |
+| Somitha Gudivada | Retrieval evaluation: FAISS index, reranking config, ablation study, threshold sweep, eval metrics |
+| Mekala Naveen Venkata Sai Kumar | Retrieval agent: hybrid BM25 + FAISS retrieval, RRF, ReAct agent loop, router, action tools |
+| Vijaya Venkata Krishna Rudra | Data ingestion: sentence chunking, section summaries, finance tools |
+| Srikanth Galipelli | UI frontend: Gradio app (7 tabs), citations, step trace, approval gate, MCP server |
 
 ## Features
 
@@ -115,7 +115,19 @@ python scripts/agent_eval.py --compare-rag
 **Prompt injection:** 0 of 3 injected instructions were obeyed, both in documents and against actions.
 
 ## Example questions
-- What does DDM stand for, and which DDM is the most common?
-- According to the rule of 72, how long does money take to double at 9%? *(then: "And at 6%?")*
-- What is the NPV at 10% of a project costing 1,000 that returns 400 per year for 3 years?
-- Who won the 2022 FIFA World Cup? *(refused: out of scope)*
+
+| # | Tab | Question | What it shows |
+|---|---|---|---|
+| 1 | Chat | What does DDM stand for, and which DDM is the most common? | hybrid search (BM25 finds the acronym), rerank scores, several citations |
+| 2 | Chat | According to the rule of 72, how long does money take to double at 9%? *then* "And at 6%?" | follow-up + query rewriting |
+| 3 | Chat | Who won the 2022 FIFA World Cup? | refusal from the reranker threshold, no sources |
+| 4 | Chat (injection test ON) | What is diversification? | injection chunk retrieved but not obeyed |
+| 5 | Agent | Define 'capital structure' using the book's glossary, then explain why it matters. | `lookup_term` + `search_corpus` |
+| 6 | Agent | What is the NPV at 10% of a project costing 1,000 that returns 400 per year for 3 years? Should we accept it? | `cash_flow_analysis` |
+| 7 | Agent | What does section 7.4 cover? Give its page range. | `get_section` |
+| 8 | Agent | Summarize what the book says about diversification and send it to my team on Slack. | `send_message` → approval box → outcome check |
+| 9 | Agent (injection ON, fake send ON) | What is diversification? | the document asks for a message; the agent ignores it |
+
+## Source
+
+The corpus is [*Principles of Finance*](https://openstax.org/details/books/principles-finance) by Julie Dahlquist and Rainford Knight, published by OpenStax (Rice University) under a [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) license.
